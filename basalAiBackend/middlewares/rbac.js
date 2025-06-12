@@ -4,7 +4,7 @@ const rbac = (roles) =>{
         if (roles.includes(req.role)){
             next()
         }else{
-            res.status(500).json({ "msg": "You are not authorized for this action" });
+            res.status(500).json({ msg: "You are not authorized for this action" });
         }
     }
 }

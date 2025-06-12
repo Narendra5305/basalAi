@@ -22,6 +22,7 @@ const getAllInterviewRequests = async (req, res) => {
 
 // For add a new interview request
 const addInterviewRequest = async (req, res) => {
+    console.log(req.body)
     try {
         const newApplication = new ApplicationModel(req.body);
         await newApplication.save();

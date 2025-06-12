@@ -7,10 +7,6 @@ const userSchema = new mongoose.Schema({
   role: {type: String,enum: ['candidate', 'company'], required: true}
 }, { timestamps: true , toJSON:{virtuals:true} , toObject: { virtuals: true }});
 
-// userSchema.virtual({
-//   ref:"Opening",
-//   for
-// })
 
 
 const UserModel = mongoose.model('User', userSchema);

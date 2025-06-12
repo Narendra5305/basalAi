@@ -10,7 +10,7 @@ const ApplicationRouter = express.Router()
 
 
 ApplicationRouter.get('/interview-requests' , auth , rbac(['candidate', 'company']) , getAllInterviewRequests ) // for get all requests
-ApplicationRouter.post('/interview-requests/add' , auth , rbac(['candidate', 'company']) , addInterviewRequest  ) // for add request
+ApplicationRouter.post('/interview-requests/add/:id' , addInterviewRequest  ) // for add request
 ApplicationRouter.patch('/interview-requests/:id/accept' , auth , rbac([ 'company']) , acceptInterviewRequest ) // for accept request
 ApplicationRouter.patch('/interview-requests/:id/reject' , auth , rbac([ 'company']) , rejectInterviewRequest ) // for reject request
  
