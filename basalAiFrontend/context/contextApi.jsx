@@ -1,19 +1,26 @@
 import React, { createContext,  useState, useEffect } from "react";
 import axios from "axios";
+import io from "socket.io-client";
 
+
+
+import notofication from "../src/assets/notofication.mp3"
 
 export const JobPotalContext = createContext();
 
-
 const baseUrl  = "http://localhost:8080" ;
+
+const socket = io(baseUrl); 
 
 
 export const JobPortalContextProvider = ({ children }) => {
-
+ 
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [user, setUser] = useState(null);
   const [opening , setOpening] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [role ,setRole] =useState(localStorage.getItem("role") || "candidate");
+
 
 
   
@@ -24,6 +31,8 @@ export const JobPortalContextProvider = ({ children }) => {
         delete axios.defaults.headers.common["Authorization"];
         }
     }, [token]);
+
+
 
 
 
@@ -39,7 +48,45 @@ export const JobPortalContextProvider = ({ children }) => {
         }
     },[])
 
+
+
+
+
+
+    useEffect(()=>{
+      try {
+        const handleNewRequest =async () => {
+          console.log("New request received!");
+
+          const audio = new Audio(notofication);
+          audio.play();
+
+          const res = await axios.get(`${baseUrl}/application/interview-requests`);
+          setRequests(res.data);
+        };
+        socket.on("newInterViewRequestCreated" , handleNewRequest)
+       
+    
+        } catch (error) {
+            console.log("Error on fetching requests")
+        }
+
+        return ()=>{socket.off("interviewRequestReceived")};
+    },[])
+
+
+    useEffect(()=>{
+      const fetchRequests = async () => {
+        const res = await axios.get(`${baseUrl}/application/interview-requests`);
+        setRequests(res.data);
+      };
+
+      fetchRequests()
+    },[])
+
  
+
+
 
   const register = async (formData) => {
     await axios.post( `${baseUrl}/users/register` , formData);
@@ -48,31 +95,47 @@ export const JobPortalContextProvider = ({ children }) => {
 
 
 
-  const signIn = async (credentialsData) => {
+  const signIn = async (credentialsData ,navigate) => {
+    try {
     const res = await axios.post(`${baseUrl}/users/signin`, credentialsData);
-    if (res.status===200){
-         const { token, user } = res.data;
+
+      if (res.status === 200) {
+        const { token, user ,role  } = res.data;
         localStorage.setItem("token", token);
+        localStorage.setItem("role",role  );
+        alert("Signin Successful!");
         setToken(token);
         setUser(user);
-        alert("Signin Successfull!")
-    }else{
-        alert("Signin fail!")
+        setRole(role)
+        navigate("/")
+      }
+
+    } catch (error) {
+      
+      if (error.response && error.response.status === 401) {
+        alert("Signin failed: Invalid credentials");
+      } else {
+        alert("An unexpected error occurred. Please try again later.");
+      }
     }
+      
   };
 
 
 
 
   const submitRequest = async (data ,id) => {
-    console.log(data,id)
-    await axios.post( `${baseUrl}/application/interview-requests/add/${id}` , data);
-    fetchRequests();
+     try {
+        await axios.post(`${baseUrl}/application/interview-requests/add/${id}`, data);
+        fetchRequests();
+    } catch (err) {
+        console.error("Error while submitting:", err);
+    }
   };
 
  
   const fetchRequests = async () => {
-    const res = await axios.get(`${baseUrl}/interview-requests`);
+    const res = await axios.get(`${baseUrl}/application/interview-requests`);
     setRequests(res.data);
   };
 
@@ -82,10 +145,10 @@ export const JobPortalContextProvider = ({ children }) => {
     fetchRequests();
   };
 
-
+  
 
   return (
-    <JobPotalContext.Provider value={{ user, token, requests, register,opening,  signIn, submitRequest, fetchRequests, acceptRequest}}>
+    <JobPotalContext.Provider value={{ user, token, setToken, requests,role , register,opening,  signIn, submitRequest, fetchRequests, acceptRequest}}>
       {children}
     </JobPotalContext.Provider>
   );

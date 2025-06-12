@@ -71,10 +71,15 @@ export const CandidatePage =() =>{
     }
 
     
+    
 
     return(
         <div id="candidate">
+            
             <div className="candidate-cont">
+                <div>
+                    <h1>Opening Page For Candidate</h1>
+                </div>
                 {opening.map((job)=>(
                     <div className="card" key={job._id}>
                         <h1>{job.title}</h1>

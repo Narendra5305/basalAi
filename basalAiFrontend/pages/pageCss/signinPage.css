@@ -3,9 +3,70 @@
 #sign-in{
     background-color: #000000;
     width: 100vw;
-    height: 100vh;
+    height: 720px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+
+
+
+
+.sign-in-form > form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+}
+
+
+.sign-in-form{
+    width: 300px;
+    height: 250px;
+    border: 1px solid  rgba(176, 11, 63, 0.6);
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.sign-in-form > form input {
+  padding: 8px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #1a1a1a;
+  color: white;
+  font-size: 14px;
+}
+
+.sign-in-form > form input:focus {
+  outline: none;
+  border-color: #666;
+}
+
+.sign-in-form > form button {
+  background-color:  rgba(255, 10, 87, 0.6);
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sign-in-form > form button:hover {
+  background-color:  rgba(255, 44, 111, 0.6);
+}
+
+
+.sign-in-form > form a{
+    color: rgba(255, 44, 111, 0.6);
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+
+.sign-in-form > form h2{
+    color: white;
+}

@@ -34,10 +34,35 @@ app.use(cors({
 
 
 
+
+
+io.on("connection" ,( socket)=>{
+    console.log("new user is connected")
+
+    socket.on("newInterViewRequestCreated" ,(data)=>{
+      io.emit("newInterViewRequestCreated" , data)
+    })
+
+    socket.on("disconnect" ,()=>{
+      
+      console.log("user is disconnected")
+    })
+
+})
+
+
+const passIoMidd = (req,res , next) =>{
+  req.io = io ;
+  next()
+}
+
 // all the routes
 app.use('/users', UserRouter );
 app.use('/opening', OpeningRouter );
-app.use('/application', ApplicationRouter );
+app.use('/application', passIoMidd ,ApplicationRouter );
+
+
+
 
 
 app.get("/" ,(req,res) =>{

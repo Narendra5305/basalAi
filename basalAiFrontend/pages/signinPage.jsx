@@ -2,8 +2,11 @@ import "./pageCss/signinPage.css";
 import { useState } from "react";
 import {JobPotalContext} from "../context/contextApi"
 import { useContext } from "react";
+import { useNavigate } from "react-router";
 
-const SigninPage = () => {
+export const SigninPage = () => {
+
+    const navigate =useNavigate();
 
     const {signIn} = useContext(JobPotalContext);
 
@@ -22,7 +25,7 @@ const SigninPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        signIn(formData)
+        signIn(formData, navigate)
         setFormData({
             email: "",
             password: ""
@@ -52,10 +55,12 @@ const SigninPage = () => {
                     required
                 />
                 <button type="submit">Login</button>
+                <a onClick={()=>navigate("/signup")}>Create Account</a>
                 </form>
+                
             </div>
         </div>
   );
 };
 
-export default SigninPage;
+

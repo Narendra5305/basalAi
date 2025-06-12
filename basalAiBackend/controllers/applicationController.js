@@ -22,10 +22,19 @@ const getAllInterviewRequests = async (req, res) => {
 
 // For add a new interview request
 const addInterviewRequest = async (req, res) => {
-    console.log(req.body)
+    const {id} = req.params;
+    const {name, email, resumeLink }   = req.body ;
     try {
-        const newApplication = new ApplicationModel(req.body);
+        const newApplication = new ApplicationModel({
+            candidate: req.userId,
+            opening:id ,
+            name  ,
+            email ,
+            resumeLink
+
+        });
         await newApplication.save();
+        req.io.emit("newInterViewRequestCreated");
         res.status(201).json({ msg: 'Interview request added successfully', application: newApplication });
     } catch (error) {
         console.error('Error adding interview request:', error);
