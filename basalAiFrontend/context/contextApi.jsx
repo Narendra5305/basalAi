@@ -8,7 +8,7 @@ import notofication from "../src/assets/notofication.mp3"
 
 export const JobPotalContext = createContext();
 
-const baseUrl  = "http://localhost:8080" ;
+const baseUrl  = "https://basalai-20g5.onrender.com/" ;
 
 const socket = io(baseUrl); 
 
