@@ -1,12 +1,17 @@
 #sign-up {
   background-color: #000000;
   width: 100vw;
-  height: 100vh;
+ 
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
    height: 720px;
+   min-height: 920px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .sign-up-form > form {
