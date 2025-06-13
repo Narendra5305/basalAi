@@ -5,13 +5,14 @@ import { JobPotalContext } from "../context/contextApi";
 
 export const SignupPage = () => {
   const navigate = useNavigate();
-  const { signUp } = useContext(JobPotalContext);
+  const { register } = useContext(JobPotalContext);
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    role: "" ,
     password: "",
-    role: "candidate"
+   
   });
 
   const handleChange = (e) => {
@@ -24,15 +25,17 @@ export const SignupPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signUp(formData, navigate);
+    register(formData, navigate);
     setFormData({
       name: "",
       email: "",
-      password: "",
-      role: "candidate"
+      role: "",
+      password: ""
+     
     });
   };
 
+   
   return (
     <div id="sign-up">
       <div className="sign-up-form">
@@ -62,7 +65,8 @@ export const SignupPage = () => {
             onChange={handleChange}
             required
           />
-          <select name="role" value={formData.role} onChange={handleChange}>
+          <select name="role" value={formData.role} onChange={handleChange} required>
+            <option value="">Select Role</option>
             <option value="candidate">Candidate</option>
             <option value="company">Company</option>
           </select>

@@ -1,14 +1,12 @@
 import React, { createContext,  useState, useEffect } from "react";
 import axios from "axios";
 import io from "socket.io-client";
-
-
-
 import notofication from "../src/assets/notofication.mp3"
 
 export const JobPotalContext = createContext();
 
 const baseUrl  = "https://basalai-20g5.onrender.com" ;
+
 
 const socket = io(baseUrl); 
 
@@ -88,8 +86,15 @@ export const JobPortalContextProvider = ({ children }) => {
 
 
 
-  const register = async (formData) => {
-    await axios.post( `${baseUrl}/users/register` , formData);
+  const register = async (formData,navigate) => {
+      try {
+        await axios.post( `${baseUrl}/users/register` , formData);
+        alert("Signup successfull!")
+         navigate("/signin")
+
+      } catch (error) {
+        alert("Signup failed")
+      }
   };
 
 
